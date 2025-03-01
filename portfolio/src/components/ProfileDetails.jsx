@@ -11,7 +11,7 @@ const ProfileDetails = () => {
                         Voluptatibus reiciendis quasi laboriosam voluptatum enim recusandae cum asperiores,
                         at aspernatur tempora quam natus id, alias aut exercitationem modi veritatis deleniti voluptatem.
                     </p>
-                    <button className="bg-blue-500 px-6 py-3 text-white font-bold rounded-lg hover:bg-blue-600 transition w-40 mt-4 mx-auto">
+                    <button className="bg-blue-500 px-6 py-3 text-white font-bold rounded-lg hover:bg-blue-600 transition w-40 mt-4 mx-auto ">
                         Download CV
                     </button>
                 </div>

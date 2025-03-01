@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -47,17 +48,24 @@ const Navbar = () => {
                         </button>
 
                         {/* Dropdown Menu */}
-                        {dropdownOpen && (
-                            <div className="absolute left-0 mt-2 w-56 bg-white text-black shadow-lg rounded-lg p-2 z-50">
-                                <DropdownLink href="#profile">Profile</DropdownLink>
-                                <DropdownLink href="#education">Education</DropdownLink>
-
-                                <DropdownLink href="#skills">Experience & Skills</DropdownLink>
-                            </div>
-                        )}
+                        <AnimatePresence>
+                            {dropdownOpen && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
+                                    transition={{ duration: 0.3 }}
+                                    className="absolute left-0 mt-2 w-56 bg-white text-black shadow-lg rounded-lg p-2 z-50"
+                                >
+                                    <DropdownLink href="#profile">Profile</DropdownLink>
+                                    <DropdownLink href="#education">Education</DropdownLink>
+                                    <DropdownLink href="#skills">Experience & Skills</DropdownLink>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                     </div>
 
-                    {/* Contact Link (White in Desktop) */}
+                    {/* Contact Link */}
                     <CustomNavLink href="#contact" className="text-white">Contact</CustomNavLink>
                 </div>
 
@@ -71,31 +79,46 @@ const Navbar = () => {
             </div>
 
             {/* Mobile Menu */}
-            {isOpen && (
-                <div className="md:hidden flex flex-col items-center gap-4 mt-4 bg-white p-4 rounded-lg w-full text-black">
-                    {/* About Dropdown for Mobile */}
-                    <div className="text-center" ref={dropdownMobileRef}>
-                        <button
-                            onClick={() => setDropdownOpen(!dropdownOpen)}
-                            className="flex items-center gap-1 text-lg text-black hover:text-blue-400 transition duration-300"
-                        >
-                            About <ChevronDown size={18} />
-                        </button>
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        className="md:hidden flex flex-col items-center gap-4 mt-4 bg-white p-4 rounded-lg w-full text-black"
+                    >
+                        {/* About Dropdown for Mobile */}
+                        <div className="text-center" ref={dropdownMobileRef}>
+                            <button
+                                onClick={() => setDropdownOpen(!dropdownOpen)}
+                                className="flex items-center gap-1 text-lg text-black hover:text-blue-400 transition duration-300"
+                            >
+                                About <ChevronDown size={18} />
+                            </button>
 
-                        {dropdownOpen && (
-                            <div className="mt-2 bg-white text-black shadow-lg rounded-lg p-2 min-w-[200px]">
-                                <DropdownLink href="#introduction">Introduction</DropdownLink>
-                                <DropdownLink href="#education">Education</DropdownLink>
+                            <AnimatePresence>
+                                {dropdownOpen && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: -10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -10 }}
+                                        transition={{ duration: 0.3 }}
+                                        className="mt-2 bg-white text-black shadow-lg rounded-lg p-2 min-w-[200px]"
+                                    >
+                                        <DropdownLink href="#profile">Introduction</DropdownLink>
+                                        <DropdownLink href="#education">Education</DropdownLink>
+                                        <DropdownLink href="#skills">Experience & Skills</DropdownLink>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
 
-                                <DropdownLink href="#experience">Experience & Skills</DropdownLink>
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Contact Link (Black in Mobile) */}
-                    <CustomNavLink href="#contact" className="text-black">Contact</CustomNavLink>
-                </div>
-            )}
+                        {/* Contact Link */}
+                        <CustomNavLink href="#contact" className="text-black">Contact</CustomNavLink>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </nav>
     );
 };

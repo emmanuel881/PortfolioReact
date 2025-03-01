@@ -17,7 +17,6 @@ const Footer = () => {
                         <h3 className="text-xl font-semibold">Quick Links</h3>
                         <ul className="mt-3 space-y-2">
                             <FooterLink href="#about">About</FooterLink>
-                            <FooterLink href="#services">Services</FooterLink>
                             <FooterLink href="#projects">Projects</FooterLink>
                             <FooterLink href="#contact">Contact</FooterLink>
                         </ul>
