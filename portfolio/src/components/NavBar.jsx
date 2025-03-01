@@ -7,6 +7,7 @@ const Navbar = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownDesktopRef = useRef(null);
     const dropdownMobileRef = useRef(null);
+    const mobileMenuRef = useRef(null);
 
     // Close dropdown when clicking outside
     useEffect(() => {
@@ -16,6 +17,9 @@ const Navbar = () => {
             }
             if (dropdownMobileRef.current && !dropdownMobileRef.current.contains(event.target)) {
                 setDropdownOpen(false);
+            }
+            if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+                setIsOpen(false);
             }
         };
 
@@ -38,7 +42,6 @@ const Navbar = () => {
 
                 {/* Desktop Menu */}
                 <div className="hidden md:flex gap-6 items-center">
-                    {/* About Dropdown */}
                     <div className="relative" ref={dropdownDesktopRef}>
                         <button
                             onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -47,7 +50,6 @@ const Navbar = () => {
                             About <ChevronDown size={18} />
                         </button>
 
-                        {/* Dropdown Menu */}
                         <AnimatePresence>
                             {dropdownOpen && (
                                 <motion.div
@@ -64,8 +66,6 @@ const Navbar = () => {
                             )}
                         </AnimatePresence>
                     </div>
-
-                    {/* Contact Link */}
                     <CustomNavLink href="#contact" className="text-white">Contact</CustomNavLink>
                 </div>
 
@@ -82,13 +82,13 @@ const Navbar = () => {
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
+                        ref={mobileMenuRef}
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
                         transition={{ duration: 0.3, ease: "easeInOut" }}
                         className="md:hidden flex flex-col items-center gap-4 mt-4 bg-white p-4 rounded-lg w-full text-black"
                     >
-                        {/* About Dropdown for Mobile */}
                         <div className="text-center" ref={dropdownMobileRef}>
                             <button
                                 onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -113,8 +113,6 @@ const Navbar = () => {
                                 )}
                             </AnimatePresence>
                         </div>
-
-                        {/* Contact Link */}
                         <CustomNavLink href="#contact" className="text-black">Contact</CustomNavLink>
                     </motion.div>
                 )}
@@ -125,20 +123,14 @@ const Navbar = () => {
 
 // Custom Styled Anchor Links
 const CustomNavLink = ({ href, children, className }) => (
-    <a
-        href={href}
-        className={`text-lg transition duration-300 hover:text-blue-400 ${className}`}
-    >
+    <a href={href} className={`text-lg transition duration-300 hover:text-blue-400 ${className}`}>
         {children}
     </a>
 );
 
 // Dropdown Link Styling
 const DropdownLink = ({ href, children }) => (
-    <a
-        href={href}
-        className="block px-4 py-2 text-black hover:bg-gray-200 transition duration-300 rounded-md"
-    >
+    <a href={href} className="block px-4 py-2 text-black hover:bg-gray-200 transition duration-300 rounded-md">
         {children}
     </a>
 );
