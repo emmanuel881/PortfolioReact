@@ -1,5 +1,4 @@
 const express = require("express")
-const authenticateAdmin = require("../middleware/authMiddleware");
 
 const router = express.Router()
 
@@ -18,13 +17,13 @@ router.get("/", getAllSkills)
 router.get("/:id", getSkill)
 
 //create skill
-router.post("/", authenticateAdmin, createSkill)
+router.post("/", createSkill)
 
 //delete skill
-router.delete("/:id", authenticateAdmin, deleteSkill)
+router.delete("/:id", deleteSkill)
 
 //update skill
-router.patch("/:id", authenticateAdmin, updateSkill)
+router.patch("/:id", updateSkill)
 
 
 module.exports = router

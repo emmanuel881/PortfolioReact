@@ -10,7 +10,7 @@ const {
     createTimeline
 } = require("../controllers/timelineController")
 
-const authenticateAdmin = require("../middleware/authMiddleware");
+
 
 //GET all timelines
 router.get("/", getAllTimeline)
@@ -19,13 +19,13 @@ router.get("/", getAllTimeline)
 router.get("/:id", singleTimeline)
 
 //POST new timeline
-router.post("/", authenticateAdmin, createTimeline)
+router.post("/", createTimeline)
 
 //PATCH timeline
-router.patch("/:id", authenticateAdmin, updateTimeline)
+router.patch("/:id", updateTimeline)
 
 //DELETE timeline
-router.delete("/:id", authenticateAdmin, deleteTimeline)
+router.delete("/:id", deleteTimeline)
 
 
 module.exports = router

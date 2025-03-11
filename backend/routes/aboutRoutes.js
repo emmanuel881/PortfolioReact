@@ -1,7 +1,7 @@
 const express = require("express")
 
 const router = express.Router()
-const authenticateAdmin = require("../middleware/authMiddleware");
+
 
 const { updateAboutme, createAboutme, getAboutme } = require("../controllers/AboutmeController")
 
@@ -9,10 +9,10 @@ const { updateAboutme, createAboutme, getAboutme } = require("../controllers/Abo
 router.get("/", getAboutme)
 
 //POST:create about
-router.post("/", authenticateAdmin, createAboutme)
+router.post("/", createAboutme)
 
 //PATCH: update about
-router.patch("/", authenticateAdmin, updateAboutme)
+router.patch("/", updateAboutme)
 
 
 module.exports = router
