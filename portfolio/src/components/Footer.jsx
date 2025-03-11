@@ -1,4 +1,23 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+
 const Footer = () => {
+    const [socialLinks, setSocialLinks] = useState(null);
+
+    useEffect(() => {
+        const fetchSocialLinks = async () => {
+            try {
+                const response = await axios.get("http://localhost:4000/api/social-links");
+                setSocialLinks(response.data);
+            } catch (error) {
+                console.error("Failed to fetch social links:", error);
+            }
+        };
+
+        fetchSocialLinks();
+    }, []);
+
     return (
         <footer className="bg-gray-900 text-white py-10">
             <div className="container mx-auto px-6">
@@ -16,9 +35,8 @@ const Footer = () => {
                     <div>
                         <h3 className="text-xl font-semibold">Quick Links</h3>
                         <ul className="mt-3 space-y-2">
-                            <FooterLink href="#about">About</FooterLink>
-                            <FooterLink href="#projects">Projects</FooterLink>
-                            <FooterLink href="#contact">Contact</FooterLink>
+                            <FooterLink href="#profile">About</FooterLink>
+                            <FooterLink href="/contact">Contact</FooterLink> {/* Updated Contact Link */}
                         </ul>
                     </div>
 
@@ -26,9 +44,14 @@ const Footer = () => {
                     <div>
                         <h3 className="text-xl font-semibold">Follow Me</h3>
                         <div className="mt-3 flex justify-center md:justify-start space-x-4">
-                            <SocialIcon href="https://linkedin.com" icon="linkedin" />
-                            <SocialIcon href="https://twitter.com" icon="twitter" />
-                            <SocialIcon href="https://github.com" icon="github" />
+                            {socialLinks && (
+                                <>
+                                    <SocialIcon href={socialLinks.linkedIn} icon="linkedin" />
+                                    <SocialIcon href={socialLinks.facebook} icon="facebook" />
+                                    <SocialIcon href={socialLinks.instagram} icon="instagram" />
+                                    <SocialIcon href={socialLinks.twitterX} icon="x" />
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -45,21 +68,31 @@ const Footer = () => {
     );
 };
 
-// Reusable Footer Link Component
-const FooterLink = ({ href, children }) => (
-    <li>
-        <a href={href} className="text-gray-400 hover:text-white transition duration-300">
-            {children}
-        </a>
-    </li>
-);
+// Reusable Footer Link Component (Updated for Internal Links)
+const FooterLink = ({ href, children }) => {
+    const isInternal = href.startsWith("/");
+    return (
+        <li>
+            {isInternal ? (
+                <Link to={href} className="text-gray-400 hover:text-white transition duration-300">
+                    {children}
+                </Link>
+            ) : (
+                <a href={href} className="text-gray-400 hover:text-white transition duration-300">
+                    {children}
+                </a>
+            )}
+        </li>
+    );
+};
 
 // Reusable Social Icon Component
 const SocialIcon = ({ href, icon }) => {
     const icons = {
         linkedin: "fa-linkedin",
-        twitter: "fa-twitter",
-        github: "fa-github",
+        x: "fa-x-twitter", // X (formerly Twitter)
+        instagram: "fa-instagram",
+        facebook: "fa-facebook",
     };
 
     return (

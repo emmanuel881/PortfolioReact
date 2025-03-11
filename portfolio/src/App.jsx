@@ -1,27 +1,54 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/NavBar";
-import LandingPage from "./components/LandingPage";
-import ProfileDetails from "./components/ProfileDetails";
-import Timeline from "./components/TimeLine";
-import SkillSet from "./components/Skills";
-import Footer from "./components/Footer";
+// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// import Navbar from "./components/NavBar";
+// import LandingPage from "./components/LandingPage";
+// import ProfileDetails from "./components/ProfileDetails";
+// import Timeline from "./components/TimeLine";
+// import SkillSet from "./components/Skills";
+// import Footer from "./components/Footer";
+
+//layouts
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import AdminLayout from "./Layouts/adminLayout";
+import UserLayout from "./Layouts/userLayout";
+
+//pages
+import Home from "./pages/Home";
+import Admin from "./pages/Admin";
+import PageNotFound from "./pages/PageNotfound";
+import Contact from "./pages/contact";
+import AdminLogin from "./pages/Login";
+
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <UserLayout />,
+    children: [
+      { index: true, element: <Home /> },
+    ]
+  },
+  {
+    path: "/login",
+    element: <AdminLogin />
+  },
+  {
+    path: "/contact",
+    element: <Contact />
+  },
+  {
+    path: "/admin",
+    element: <AdminLayout />,
+    children: [
+      { index: true, element: <Admin /> }
+    ]
+  },
+  { path: "*", element: <PageNotFound /> }
+])
 
 function App() {
-  return (
-    <Router>
-      <Navbar />
-      <LandingPage />
-      <ProfileDetails />
-      <Timeline />
-      <SkillSet />
-      <Footer />
 
-      {/* Routes */}
-      <Routes>
-        <Route path="/about" element={<h1 className="text-xl">About Page</h1>} />
-        <Route path="/contact" element={<h1 className="text-xl">Contact Page</h1>} />
-      </Routes>
-    </Router>
+  return (
+    <RouterProvider router={router} />
   );
 }
 

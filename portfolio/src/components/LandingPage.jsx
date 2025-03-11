@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export const LandingPage = () => {
     return (
         <section
@@ -27,9 +29,9 @@ export const LandingPage = () => {
                         Empowering businesses with insightful audits and financial clarity.
                         Let’s build trust through transparency.
                     </p>
-                    <button className="bg-blue-500 px-6 py-3 text-white font-semibold rounded-lg hover:bg-blue-600 transition text-lg">
+                    <Link to="/contact" className="animate-bounce bg-blue-500 px-6 py-3 text-white font-semibold rounded-lg hover:bg-blue-600 transition text-lg">
                         Talk to Me
-                    </button>
+                    </Link>
                 </div>
             </div>
         </section>

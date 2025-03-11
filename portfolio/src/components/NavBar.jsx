@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { NavLink } from "react-router-dom"
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -59,14 +60,22 @@ const Navbar = () => {
                                     transition={{ duration: 0.3 }}
                                     className="absolute left-0 mt-2 w-56 bg-white text-black shadow-lg rounded-lg p-2 z-50"
                                 >
-                                    <DropdownLink href="#profile">Profile</DropdownLink>
+                                    <DropdownLink href="#profile">Introduction</DropdownLink>
                                     <DropdownLink href="#education">Education</DropdownLink>
                                     <DropdownLink href="#skills">Experience & Skills</DropdownLink>
                                 </motion.div>
                             )}
                         </AnimatePresence>
                     </div>
-                    <CustomNavLink href="#contact" className="text-white">Contact</CustomNavLink>
+                    <NavLink
+                        to="/contact"
+                        className={({ isActive }) =>
+                            `text-white ${isActive ? 'font-bold underline' : ''}`
+                        }
+                    >
+                        Contact
+                    </NavLink>
+
                 </div>
 
                 {/* Mobile Menu Button */}
@@ -113,7 +122,14 @@ const Navbar = () => {
                                 )}
                             </AnimatePresence>
                         </div>
-                        <CustomNavLink href="#contact" className="text-black">Contact</CustomNavLink>
+                        <NavLink
+                            to="/contact"
+                            className={({ isActive }) =>
+                                `text-black ${isActive ? 'font-bold underline' : ''}`
+                            }
+                        >
+                            Contact
+                        </NavLink>
                     </motion.div>
                 )}
             </AnimatePresence>
