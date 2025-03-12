@@ -16,6 +16,7 @@ const authRoute = require("./routes/authRoutes");
 // Environment variables
 const PORT = process.env.PORT || 4000; // Default to 4000 if not set
 const MONGODB_URL = process.env.MONGODB_URL;
+const NODE_ENV = process.env.NODE_ENV || "development"; // Default to "development"
 
 // App instance
 const app = express();
@@ -35,15 +36,20 @@ app.use("/api/social-links", socialLinksRoutes);
 app.use("/api/auth", authRoute);
 
 // Connect to DB & Start Server
-mongoose
-    .connect(MONGODB_URL)
-    .then(() => {
+const connectDB = async () => {
+    try {
+        await mongoose.connect(MONGODB_URL); // No need for deprecated options
         console.log("Connected to Database");
+
         app.listen(PORT, () => {
-            console.log(`Server is running on port ${PORT}`);
+            console.log(`🚀 Server is running on port ${PORT} in ${NODE_ENV} mode`);
         });
-    })
-    .catch((error) => {
+    } catch (error) {
         console.error("Database connection error:", error);
-        process.exit(1); // Stop server if DB connection fails
-    });
+        console.log("Retrying in 5 seconds...");
+        setTimeout(connectDB, 5000);
+    }
+};
+
+
+connectDB();
