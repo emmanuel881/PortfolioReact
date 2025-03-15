@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 
+const API_URL = import.meta.env.VITE_API_URL
+
 const AdminSocialLinks = () => {
     const [socialLinks, setSocialLinks] = useState({
         linkedIn: "",
@@ -17,7 +19,7 @@ const AdminSocialLinks = () => {
         // Fetch existing social links
         const fetchSocialLinks = async () => {
             try {
-                const response = await axios.get("http://localhost:4000/api/social-links");
+                const response = await axios.get(`${API_URL}/api/social-links`);
                 const { _id, __v, ...filteredLinks } = response.data; // Remove _id & __v
                 setSocialLinks(filteredLinks);
             } catch (error) {
@@ -37,7 +39,7 @@ const AdminSocialLinks = () => {
         e.preventDefault();
         setIsSaving(true);
         try {
-            await axios.patch("http://localhost:4000/api/social-links", socialLinks);
+            await axios.patch(`${API_URL}/api/social-links`, socialLinks);
             setMessage("✅ Social links updated successfully!");
             setTimeout(() => setMessage(""), 2000); // Hide message after 2 seconds
         } catch (error) {
@@ -79,8 +81,8 @@ const AdminSocialLinks = () => {
                     <motion.button
                         type="submit"
                         className={`w-full text-white font-bold py-2 rounded-lg transition flex justify-center items-center gap-2 ${isSaving
-                                ? "bg-gray-500 cursor-not-allowed animate-pulse"
-                                : "bg-blue-500 hover:bg-blue-600"
+                            ? "bg-gray-500 cursor-not-allowed animate-pulse"
+                            : "bg-blue-500 hover:bg-blue-600"
                             }`}
                         whileHover={!isSaving ? { scale: 1.05 } : {}}
                         whileTap={!isSaving ? { scale: 0.95 } : {}}

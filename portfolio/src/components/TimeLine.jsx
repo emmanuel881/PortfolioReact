@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import dayjs from "dayjs";
 
+const API_URL = import.meta.env.VITE_API_URL
 const Timeline = () => {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -11,7 +12,7 @@ const Timeline = () => {
     useEffect(() => {
         const fetchTimeline = async () => {
             try {
-                const response = await axios.get("http://localhost:4000/api/timeline");
+                const response = await axios.get(`${API_URL}/api/timeline`);
                 setEvents(response.data);
             } catch (err) {
                 setError("Failed to load timeline data");

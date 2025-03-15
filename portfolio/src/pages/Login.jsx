@@ -3,6 +3,9 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 
+
+const API_URL = import.meta.env.VITE_API_URL
+
 const AdminLogin = () => {
     const navigate = useNavigate();
 
@@ -19,7 +22,7 @@ const AdminLogin = () => {
     // Handle form submission
     const handleLogin = async (values, { setSubmitting, setErrors }) => {
         try {
-            const response = await axios.post("http://localhost:4000/api/auth/login", values);
+            const response = await axios.post(`${API_URL}/api/auth/login`, values);
             localStorage.setItem("token", response.data.token);
             navigate("/admin");
         } catch (err) {

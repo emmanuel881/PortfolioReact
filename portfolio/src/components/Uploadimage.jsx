@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+const API_URL = import.meta.env.VITE_API_URL
 const UploadImage = () => {
     const [image, setImage] = useState(null);
     const [preview, setPreview] = useState(null);
@@ -25,7 +26,7 @@ const UploadImage = () => {
         formData.append("image", image);
 
         try {
-            const response = await axios.post("http://localhost:5000/api/upload", formData, {
+            const response = await axios.post(`${API_URL}/api/upload`, formData, {
                 headers: { "Content-Type": "multipart/form-data" }
             });
 

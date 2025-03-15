@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
+const API_URL = import.meta.env.VITE_API_URL
 const Footer = () => {
     const [socialLinks, setSocialLinks] = useState(null);
 
     useEffect(() => {
         const fetchSocialLinks = async () => {
             try {
-                const response = await axios.get("http://localhost:4000/api/social-links");
+                const response = await axios.get(`${API_URL}/api/social-links`);
                 setSocialLinks(response.data);
             } catch (error) {
                 console.error("Failed to fetch social links:", error);

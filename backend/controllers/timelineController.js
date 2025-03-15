@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 // Get all timelines
 const getAllTimeline = async (req, res) => {
-    const timelines = await Timeline.find({}).sort({ from: 1 });
+    const timelines = await Timeline.find({}).sort({ from: -1 });
     return res.status(200).json(timelines);
 };
 

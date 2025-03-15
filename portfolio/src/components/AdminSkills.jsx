@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+const API_URL = import.meta.env.VITE_API_URL
+
 const SkillsAdmin = () => {
     const [skills, setSkills] = useState([]);
     const [formData, setFormData] = useState({ title: "", description: "", percentage: "" });
@@ -13,7 +15,7 @@ const SkillsAdmin = () => {
 
     const fetchSkills = async () => {
         try {
-            const response = await axios.get("http://localhost:4000/api/skills");
+            const response = await axios.get(`${API_URL}/skills`);
             setSkills(response.data);
         } catch (error) {
             console.error("Error fetching skills:", error);
@@ -30,9 +32,9 @@ const SkillsAdmin = () => {
         e.preventDefault();
         try {
             if (editingId) {
-                await axios.patch(`http://localhost:4000/api/skills/${editingId}`, formData);
+                await axios.patch(`${API_URL}/api/skills/${editingId}`, formData);
             } else {
-                await axios.post("http://localhost:4000/api/skills", formData);
+                await axios.post(`${API_URL}/api/skills`, formData);
             }
             fetchSkills();
             setFormData({ title: "", description: "", percentage: "" });
@@ -45,7 +47,7 @@ const SkillsAdmin = () => {
     // Delete skill
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:4000/api/skills/${id}`);
+            await axios.delete(`${API_URL}/api/skills/${id}`);
             fetchSkills();
         } catch (error) {
             console.error("Error deleting skill:", error);

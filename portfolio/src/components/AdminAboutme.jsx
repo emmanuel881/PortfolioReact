@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
+const API_URL = import.meta.env.VITE_API_URL
 const AdminAboutMe = () => {
     const [aboutMe, setAboutMe] = useState("");
     const [loading, setLoading] = useState(false);
@@ -11,7 +12,7 @@ const AdminAboutMe = () => {
     useEffect(() => {
         const fetchAboutMe = async () => {
             try {
-                const response = await fetch("http://localhost:4000/api/aboutme");
+                const response = await fetch(`${API_URL}/api/aboutme`);
                 const data = await response.json();
                 if (response.ok) {
                     setAboutMe(data.aboutMe);
@@ -35,7 +36,7 @@ const AdminAboutMe = () => {
         setMessage("");
 
         try {
-            const response = await fetch("http://localhost:4000/api/aboutme", {
+            const response = await fetch(`${API_URL}/api/aboutme`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ aboutMe }),
@@ -92,8 +93,8 @@ const AdminAboutMe = () => {
                         whileHover={!loading ? { scale: 1.05 } : {}}
                         whileTap={!loading ? { scale: 0.95 } : {}}
                         className={`w-full text-white py-3 rounded-lg transition ${loading || !aboutMe.trim()
-                                ? "bg-gray-500 cursor-not-allowed"
-                                : "bg-blue-500 hover:bg-blue-600"
+                            ? "bg-gray-500 cursor-not-allowed"
+                            : "bg-blue-500 hover:bg-blue-600"
                             }`}
                         disabled={loading || !aboutMe.trim()}
                     >

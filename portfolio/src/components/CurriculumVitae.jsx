@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL
+
 const CurriculumVitae = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [savedCV, setSavedCV] = useState(null);
@@ -9,7 +11,7 @@ const CurriculumVitae = () => {
     useEffect(() => {
         const checkSavedCV = async () => {
             try {
-                const response = await fetch("http://localhost:4000/api/cv/check-cv");
+                const response = await fetch(`${API_URL}/api/cv/check-cv`);
                 const data = await response.json();
                 if (data.exists) {
                     setSavedCV(data.filename); // Set the saved CV filename
@@ -38,7 +40,7 @@ const CurriculumVitae = () => {
         formData.append("cv", selectedFile);
 
         try {
-            const response = await fetch("http://localhost:4000/api/cv/upload-cv", {
+            const response = await fetch(`${API_URL}/api/cv/upload-cv`, {
                 method: "POST",
                 body: formData,
             });
@@ -53,7 +55,7 @@ const CurriculumVitae = () => {
 
     const handleDownload = async () => {
         try {
-            const response = await fetch("http://localhost:4000/api/cv/download-cv");
+            const response = await fetch(`${API_URL}/api/cv/download-cv`);
             if (response.status === 404) {
                 setMessage("CV not found.");
                 return;
@@ -73,7 +75,7 @@ const CurriculumVitae = () => {
 
     const handleDelete = async () => {
         try {
-            const response = await fetch("http://localhost:4000/api/cv/delete-cv", {
+            const response = await fetch(`${API_URL}/api/cv/delete-cv`, {
                 method: "DELETE",
             });
             const data = await response.json();

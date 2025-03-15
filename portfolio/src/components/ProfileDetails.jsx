@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 
+const API_URL = import.meta.env.VITE_API_URL
+
 const ProfileDetails = () => {
     const [aboutMe, setAboutMe] = useState("");
     const [loading, setLoading] = useState(true);
@@ -12,7 +14,7 @@ const ProfileDetails = () => {
     useEffect(() => {
         const fetchAboutMe = async () => {
             try {
-                const response = await axios.get("http://localhost:4000/api/aboutme"); // Adjust if needed
+                const response = await axios.get(`${API_URL}/api/aboutme`);
                 setAboutMe(response.data.aboutMe);
             } catch (err) {
                 setError("Failed to load About Me");
@@ -29,7 +31,7 @@ const ProfileDetails = () => {
             setIsDownloading(true);
             setDownloadMessage("");
 
-            const response = await fetch("http://localhost:4000/api/cv/download-cv");
+            const response = await fetch(`${API_URL}/api/cv/download-cv`);
 
             if (response.status === 404) {
                 setDownloadMessage("CV not found.");
@@ -86,7 +88,7 @@ const ProfileDetails = () => {
                         {isDownloading ? "Downloading..." : "Download CV"}
                     </motion.button>
                     {downloadMessage && (
-                        <p className={`mt-3 text-sm ${downloadMessage.includes("failed") ? "text-red-500" : "text-green-600"}`}>
+                        <p className={`mt - 3 text - sm ${downloadMessage.includes("failed") ? "text-red-500" : "text-green-600"}`}>
                             {downloadMessage}
                         </p>
                     )}

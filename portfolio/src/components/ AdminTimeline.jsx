@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 
+const API_URL = import.meta.env.VITE_API_URL
+
 const AdminTimeline = () => {
     const [timelines, setTimelines] = useState([]);
     const [formData, setFormData] = useState({ from: "", to: "", title: "", description: "" });
@@ -15,7 +17,7 @@ const AdminTimeline = () => {
 
     const fetchTimelines = async () => {
         try {
-            const response = await axios.get("http://localhost:4000/api/timeline");
+            const response = await axios.get(`${API_URL}/api/timeline`);
             setTimelines(response.data);
         } catch (error) {
             setMessage("⚠️ Failed to fetch timelines.");
@@ -32,10 +34,10 @@ const AdminTimeline = () => {
 
         try {
             if (editingId) {
-                await axios.patch(`http://localhost:4000/api/timeline/${editingId}`, formData);
+                await axios.patch(`${API_URL}/api/timeline/${editingId}`, formData);
                 setMessage("✅ Timeline updated successfully!");
             } else {
-                await axios.post("http://localhost:4000/api/timeline", formData);
+                await axios.post(`${API_URL}/api/timeline`, formData);
                 setMessage("✅ Timeline added successfully!");
             }
             fetchTimelines();
@@ -62,7 +64,7 @@ const AdminTimeline = () => {
     const handleDelete = async (id) => {
         if (!window.confirm("Are you sure you want to delete this timeline entry?")) return;
         try {
-            await axios.delete(`http://localhost:4000/api/timeline/${id}`);
+            await axios.delete(`${API_URL}/api/timeline/${id}`);
             setMessage("✅ Timeline deleted successfully!");
             fetchTimelines();
         } catch (error) {
@@ -144,8 +146,8 @@ const AdminTimeline = () => {
                         whileHover={!loading ? { scale: 1.05 } : {}}
                         whileTap={!loading ? { scale: 0.95 } : {}}
                         className={`w-full text-white py-3 rounded-lg font-medium transition ${loading || !formData.title.trim()
-                                ? "bg-gray-500 cursor-not-allowed"
-                                : "bg-blue-500 hover:bg-blue-600"
+                            ? "bg-gray-500 cursor-not-allowed"
+                            : "bg-blue-500 hover:bg-blue-600"
                             }`}
                         disabled={loading || !formData.title.trim()}
                     >

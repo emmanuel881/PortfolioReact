@@ -1,8 +1,28 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 
-const CircularProgress = ({ skill, value, max = 100, color = "blue", description }) => {
+// ✅ Ensure TypeScript knows about Vite environment variables
+const API_URL = import.meta.env.VITE_API_URL as string;
+
+// ✅ Define Skill type for API response
+type Skill = {
+    _id: string;
+    title: string;
+    percentage: number;
+    description: string;
+};
+
+// ✅ Define a separate type for CircularProgress component props
+interface CircularProgressProps {
+    title: string;
+    value: number;
+    max?: number;
+    color?: string;
+    description?: string;
+}
+
+const CircularProgress: React.FC<CircularProgressProps> = ({ title, value, max = 100, color = "#3B82F6", description }) => {
     const percentage = (value / max) * 100;
     const radius = 40;
     const circumference = 2 * Math.PI * radius;
@@ -19,10 +39,7 @@ const CircularProgress = ({ skill, value, max = 100, color = "blue", description
             {/* Animated Circular Progress */}
             <div className="flex flex-col items-center">
                 <svg width="100" height="100" viewBox="0 0 100 100" className="rotate-[-90deg]">
-                    {/* Background Circle */}
                     <circle cx="50" cy="50" r={radius} stroke="#e5e7eb" strokeWidth="10" fill="transparent" />
-
-                    {/* Progress Circle */}
                     <motion.circle
                         cx="50"
                         cy="50"
@@ -31,7 +48,6 @@ const CircularProgress = ({ skill, value, max = 100, color = "blue", description
                         strokeWidth="10"
                         fill="transparent"
                         strokeDasharray={circumference}
-                        strokeDashoffset={circumference}
                         initial={{ strokeDashoffset: circumference }}
                         whileInView={{ strokeDashoffset: circumference - (circumference * percentage) / 100 }}
                         transition={{ duration: 3, ease: "easeInOut" }}
@@ -39,8 +55,6 @@ const CircularProgress = ({ skill, value, max = 100, color = "blue", description
                         viewport={{ once: true }}
                     />
                 </svg>
-
-                {/* Animated Percentage */}
                 <motion.p
                     className="text-3xl font-bold mt-2"
                     initial={{ opacity: 0, scale: 0.5 }}
@@ -54,7 +68,7 @@ const CircularProgress = ({ skill, value, max = 100, color = "blue", description
 
             {/* Skill Title & Description */}
             <div className="flex flex-col justify-center">
-                <h3 className="text-xl font-semibold text-gray-900">{skill}</h3>
+                <h3 className="text-xl font-semibold text-gray-900">{title}</h3>
                 <p className="text-gray-600 text-sm mt-1">{description}</p>
             </div>
         </motion.div>
@@ -62,28 +76,26 @@ const CircularProgress = ({ skill, value, max = 100, color = "blue", description
 };
 
 export default function SkillSet() {
-    const [skills, setSkills] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [skills, setSkills] = useState<Skill[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchSkills = async () => {
             try {
-                const response = await axios.get("http://localhost:4000/api/skills"); // Adjust if needed
-                setSkills(response.data); // Assuming API returns an array of skills
+                const response = await axios.get<Skill[]>(`${API_URL}/api/skills`);
+                setSkills(response.data);
             } catch (err) {
-                setError("Failed to load skills");
+                setError(err instanceof Error ? err.message : "Failed to load skills");
             } finally {
                 setLoading(false);
             }
         };
-
         fetchSkills();
     }, []);
 
     return (
         <div className="bg-gray-100 max-w-8xl mx-auto p-10" id="skills">
-            {/* Title Section */}
             <motion.h2
                 className="text-4xl font-bold text-center text-gray-900 mb-8"
                 initial={{ opacity: 0, y: -20 }}
@@ -94,18 +106,16 @@ export default function SkillSet() {
                 Skills
             </motion.h2>
 
-            {/* Display Loading / Error Message */}
             {loading ? (
                 <p className="text-center text-gray-500">Loading...</p>
             ) : error ? (
                 <p className="text-center text-red-500">{error}</p>
             ) : (
-                // Skill Grid
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                     {skills.map((skill) => (
                         <CircularProgress
                             key={skill._id}
-                            skill={skill.title}
+                            title={skill.title} // ✅ Fix: Use 'title' instead of 'skill'
                             value={skill.percentage}
                             color="#3B82F6"
                             description={skill.description}
