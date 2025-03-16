@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { NavLink } from "react-router-dom"
+import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -10,7 +10,6 @@ const Navbar = () => {
     const dropdownMobileRef = useRef(null);
     const mobileMenuRef = useRef(null);
 
-    // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownDesktopRef.current && !dropdownDesktopRef.current.contains(event.target)) {
@@ -76,6 +75,13 @@ const Navbar = () => {
                         Contact
                     </NavLink>
 
+                    {/* 🔹 Login Button (Desktop) */}
+                    <NavLink
+                        to="/admin"
+                        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+                    >
+                        Login
+                    </NavLink>
                 </div>
 
                 {/* Mobile Menu Button */}
@@ -130,6 +136,14 @@ const Navbar = () => {
                         >
                             Contact
                         </NavLink>
+
+                        {/* 🔹 Login Button (Mobile) */}
+                        <NavLink
+                            to="/login"
+                            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+                        >
+                            Login
+                        </NavLink>
                     </motion.div>
                 )}
             </AnimatePresence>
@@ -138,13 +152,6 @@ const Navbar = () => {
 };
 
 // Custom Styled Anchor Links
-const CustomNavLink = ({ href, children, className }) => (
-    <a href={href} className={`text-lg transition duration-300 hover:text-blue-400 ${className}`}>
-        {children}
-    </a>
-);
-
-// Dropdown Link Styling
 const DropdownLink = ({ href, children }) => (
     <a href={href} className="block px-4 py-2 text-black hover:bg-gray-200 transition duration-300 rounded-md">
         {children}
