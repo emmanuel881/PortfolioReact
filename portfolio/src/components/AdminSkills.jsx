@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API_URL
+const API_URL = import.meta.env.VITE_API_URL;
 
 const SkillsAdmin = () => {
     const [skills, setSkills] = useState([]);
     const [formData, setFormData] = useState({ title: "", description: "", percentage: "" });
     const [editingId, setEditingId] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [deletingId, setDeletingId] = useState(null);
 
     // Fetch all skills
     useEffect(() => {
@@ -30,6 +32,7 @@ const SkillsAdmin = () => {
     // Create or update skill
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             if (editingId) {
                 await axios.patch(`${API_URL}/api/skills/${editingId}`, formData);
@@ -41,17 +44,24 @@ const SkillsAdmin = () => {
             setEditingId(null);
         } catch (error) {
             console.error("Error saving skill:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
-    // Delete skill
+    // Delete skill with animation
     const handleDelete = async (id) => {
-        try {
-            await axios.delete(`${API_URL}/api/skills/${id}`);
-            fetchSkills();
-        } catch (error) {
-            console.error("Error deleting skill:", error);
-        }
+        setDeletingId(id);
+        setTimeout(async () => {
+            try {
+                await axios.delete(`${API_URL}/api/skills/${id}`);
+                fetchSkills();
+            } catch (error) {
+                console.error("Error deleting skill:", error);
+            } finally {
+                setDeletingId(null);
+            }
+        }, 500); // Delay for animation effect
     };
 
     // Load skill for editing
@@ -96,9 +106,10 @@ const SkillsAdmin = () => {
                 />
                 <button
                     type="submit"
-                    className="w-full py-3 rounded-lg text-lg font-semibold text-white bg-blue-600 hover:bg-blue-700 transition duration-300"
+                    className="w-full py-3 rounded-lg text-lg font-semibold text-white bg-blue-600 hover:bg-blue-700 transition duration-300 flex justify-center"
+                    disabled={loading}
                 >
-                    {editingId ? "Update Skill" : "Add Skill"}
+                    {loading ? "Processing..." : editingId ? "Update Skill" : "Add Skill"}
                 </button>
             </form>
 
@@ -107,7 +118,11 @@ const SkillsAdmin = () => {
                 <h3 className="text-2xl font-semibold mb-4 text-center">📜 Skills List</h3>
                 <div className="space-y-4">
                     {skills.map((skill) => (
-                        <div key={skill._id} className="bg-gray-800 p-4 rounded-lg shadow-lg flex flex-col sm:flex-row justify-between items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-4">
+                        <div
+                            key={skill._id}
+                            className={`bg-gray-800 p-4 rounded-lg shadow-lg flex flex-col sm:flex-row justify-between items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-4 transition-opacity duration-500 ${deletingId === skill._id ? "opacity-0" : "opacity-100"
+                                }`}
+                        >
                             <div className="flex-1">
                                 <h4 className="text-lg font-semibold">{skill.title}</h4>
                                 <p className="text-sm text-gray-400">{skill.description}</p>
@@ -116,15 +131,16 @@ const SkillsAdmin = () => {
                             <div className="flex space-x-3">
                                 <button
                                     onClick={() => handleEdit(skill)}
-                                    className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg transition duration-300"
+                                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300"
                                 >
                                     Edit
                                 </button>
                                 <button
                                     onClick={() => handleDelete(skill._id)}
                                     className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition duration-300"
+                                    disabled={deletingId === skill._id}
                                 >
-                                    Delete
+                                    {deletingId === skill._id ? "Deleting..." : "Delete"}
                                 </button>
                             </div>
                         </div>
