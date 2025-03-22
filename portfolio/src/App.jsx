@@ -42,7 +42,7 @@ const router = createBrowserRouter([
 function App() {
 
   return (
-    <RouterProvider router={router} basename="/PortfolioReact" />
+    <RouterProvider router={router} />
   );
 }
 
