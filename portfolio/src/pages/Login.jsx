@@ -37,10 +37,11 @@ const AdminLogin = () => {
                 {/* Back Button */}
                 <button
                     onClick={() => navigate("/")}
-                    className="absolute top-4 left-4 text-sm text-gray-400 hover:text-gray-200 transition"
+                    className="absolute top-4 left-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition"
                 >
-                    ← Back
+                    Back
                 </button>
+
 
                 <h2 className="text-2xl font-bold text-center mb-4">Login</h2>
 
@@ -50,7 +51,7 @@ const AdminLogin = () => {
                     onSubmit={handleLogin}
                 >
                     {({ isSubmitting, errors }) => (
-                        <Form className="space-y-4">
+                        <Form className="space-y-4 mt-10">
                             {errors.server && <p className="text-red-500 text-center">{errors.server}</p>}
 
                             <div>
