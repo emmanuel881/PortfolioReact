@@ -48,6 +48,10 @@ const SkillsAdmin = () => {
 
     const handleDelete = async (id) => {
         setDeletingId(id);
+
+        // Remove from UI instantly
+        setSkills(prevSkills => prevSkills.filter(skill => skill._id !== id));
+
         setTimeout(async () => {
             try {
                 await axios.delete(`${API_URL}/api/skills/${id}`);
@@ -57,7 +61,7 @@ const SkillsAdmin = () => {
             } finally {
                 setDeletingId(null);
             }
-        }, 500); // Delay to allow animation to complete
+        }, 500); // API call happens after animation
     };
 
     const handleEdit = (skill) => {
@@ -115,7 +119,7 @@ const SkillsAdmin = () => {
                     {skills.map((skill) => (
                         <div
                             key={skill._id}
-                            className={`bg-gray-800 p-4 rounded-lg shadow-lg flex flex-col sm:flex-row justify-between items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-4 transition-all duration-500 ${deletingId === skill._id ? "opacity-0 -translate-x-10" : "opacity-100 translate-x-0"
+                            className={`bg-gray-800 p-4 rounded-lg shadow-lg flex flex-col sm:flex-row justify-between items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-4 transition-all duration-500 overflow-hidden ${deletingId === skill._id ? "opacity-0 scale-95 h-0 p-0" : "opacity-100 scale-100 h-auto"
                                 }`}
                         >
                             <div className="flex-1">
