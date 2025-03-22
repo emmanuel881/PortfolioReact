@@ -15,7 +15,7 @@ const SkillsAdmin = () => {
 
     const fetchSkills = async () => {
         try {
-            const response = await axios.get(`${API_URL}/skills`);
+            const response = await axios.get(`${API_URL}/api/skills`);
             setSkills(response.data);
         } catch (error) {
             console.error("Error fetching skills:", error);
