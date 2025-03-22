@@ -26,12 +26,12 @@ const sendEmail = async (req, res) => {
         // Email details
         const mailOptions = {
             from: `"${name}" <${email}>`,
-            to: "emmanuelsaura008@gmail.com",
+            to: "mk.munga@yahoo.com",
             subject: "New Portfolio Message",
             text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
             html: `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
-                    <h2 style="color: #333; text-align: center;">📩 New Portfolio Message</h2>
+                    <h2 style="color: #333; text-align: center;">New Portfolio Message</h2>
                     <hr style="border: none; height: 1px; background-color: #ddd;">
                     <p><strong>Name:</strong> ${name}</p>
                     <p><strong>Email:</strong> <a href="mailto:${email}" style="color: #007bff;">${email}</a></p>
@@ -40,7 +40,7 @@ const sendEmail = async (req, res) => {
                         <p style="white-space: pre-wrap; font-size: 25px">${message}</p>
                     </div>
                     <hr style="border: none; height: 1px; background-color: #ddd;">
-                    <p style="text-align: center; font-size: 30px; color: #555;">📧 Sent from your portfolio contact form</p>
+                    <p style="text-align: center; font-size: 30px; color: #555;">Sent from your portfolio website</p>
                 </div>
             `,
         };
