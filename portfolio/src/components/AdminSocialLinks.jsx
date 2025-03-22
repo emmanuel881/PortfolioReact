@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 
-const API_URL = import.meta.env.VITE_API_URL
+const API_URL = import.meta.env.VITE_API_URL;
 
 const AdminSocialLinks = () => {
     const [socialLinks, setSocialLinks] = useState({
@@ -13,23 +13,29 @@ const AdminSocialLinks = () => {
     });
     const [loading, setLoading] = useState(true);
     const [message, setMessage] = useState("");
+    const [messageType, setMessageType] = useState(""); // success, error
     const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
-        // Fetch existing social links
         const fetchSocialLinks = async () => {
             try {
                 const response = await axios.get(`${API_URL}/api/social-links`);
                 const { _id, __v, ...filteredLinks } = response.data; // Remove _id & __v
                 setSocialLinks(filteredLinks);
             } catch (error) {
-                setMessage("Failed to load social links.");
+                showMessage("❌ Failed to load social links.", "error");
             } finally {
                 setLoading(false);
             }
         };
         fetchSocialLinks();
     }, []);
+
+    const showMessage = (msg, type = "info") => {
+        setMessage(msg);
+        setMessageType(type);
+        setTimeout(() => setMessage(""), 3000); // Auto-hide after 3s
+    };
 
     const handleChange = (e) => {
         setSocialLinks({ ...socialLinks, [e.target.name]: e.target.value });
@@ -40,10 +46,10 @@ const AdminSocialLinks = () => {
         setIsSaving(true);
         try {
             await axios.patch(`${API_URL}/api/social-links`, socialLinks);
-            setMessage("✅ Social links updated successfully!");
-            setTimeout(() => setMessage(""), 2000); // Hide message after 2 seconds
+            showMessage("✅ Social links updated successfully!", "success");
         } catch (error) {
-            setMessage("❌ Failed to update social links.");
+            showMessage("❌ Failed to update. Please try again.", "error");
+            console.error("API Error:", error);
         } finally {
             setIsSaving(false);
         }
@@ -80,21 +86,30 @@ const AdminSocialLinks = () => {
                     {/* Submit Button */}
                     <motion.button
                         type="submit"
-                        className={`w-full text-white font-bold py-2 rounded-lg transition flex justify-center items-center gap-2 ${isSaving
-                            ? "bg-gray-500 cursor-not-allowed animate-pulse"
-                            : "bg-blue-500 hover:bg-blue-600"
+                        className={`w-full text-white font-bold py-2 rounded-lg transition flex justify-center items-center gap-2 ${isSaving ? "bg-gray-500 cursor-not-allowed animate-pulse" : "bg-blue-500 hover:bg-blue-600"
                             }`}
                         whileHover={!isSaving ? { scale: 1.05 } : {}}
                         whileTap={!isSaving ? { scale: 0.95 } : {}}
                         disabled={isSaving}
                     >
-                        {isSaving ? "Making Changes..." : "Save Changes"}
+                        {isSaving ? (
+                            <>
+                                <span className="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5"></span>
+                                Saving...
+                            </>
+                        ) : (
+                            "Save Changes"
+                        )}
                     </motion.button>
                 </form>
             )}
 
+            {/* Message Display */}
             {message && (
-                <p className={`mt-4 text-center font-semibold ${message.includes("✅") ? "text-green-400" : "text-red-400"}`}>
+                <p
+                    className={`mt-4 text-center font-semibold ${messageType === "success" ? "text-green-400" : "text-red-400"
+                        }`}
+                >
                     {message}
                 </p>
             )}

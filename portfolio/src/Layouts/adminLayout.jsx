@@ -11,14 +11,15 @@ const AdminLayout = () => {
     return (
         <div className="min-h-screen flex flex-col bg-gray-900 text-white">
             {/* Navbar */}
-            <nav className="bg-gray-800 py-4 px-6 flex justify-between items-center shadow-md">
-                <h1 className="text-xl font-semibold">Admin</h1>
-                <button
-                    onClick={handleLogout}
-                    className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg transition"
-                >
-                    Logout
-                </button>
+            <nav className="bg-gray-800 py-4 px-6 flex items-center shadow-md">
+                <div className="ml-auto">
+                    <button
+                        onClick={handleLogout}
+                        className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg transition"
+                    >
+                        Logout
+                    </button>
+                </div>
             </nav>
 
             {/* Page Content */}

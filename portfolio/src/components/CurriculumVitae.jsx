@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 
-const API_URL = import.meta.env.VITE_API_URL
+const API_URL = import.meta.env.VITE_API_URL;
 
 const CurriculumVitae = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [savedCV, setSavedCV] = useState(null);
     const [message, setMessage] = useState("");
+    const [messageType, setMessageType] = useState(""); // Success, error, or warning
 
     // Fetch saved CV on load
     useEffect(() => {
@@ -19,12 +20,18 @@ const CurriculumVitae = () => {
                     setSavedCV(null);
                 }
             } catch (error) {
-                setMessage("Error checking saved CV.");
+                showMessage("⚠️ Error checking saved CV.", "error");
             }
         };
 
         checkSavedCV();
     }, []);
+
+    const showMessage = (msg, type = "info") => {
+        setMessage(msg);
+        setMessageType(type);
+        setTimeout(() => setMessage(""), 3000); // Auto-hide after 3s
+    };
 
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]);
@@ -32,7 +39,7 @@ const CurriculumVitae = () => {
 
     const handleUpload = async () => {
         if (!selectedFile) {
-            setMessage("Please select a file to upload.");
+            showMessage("⚠️ Please select a file to upload.", "warning");
             return;
         }
 
@@ -45,11 +52,11 @@ const CurriculumVitae = () => {
                 body: formData,
             });
             const data = await response.json();
-            setMessage(data.message || "CV uploaded successfully!");
-            setSavedCV(selectedFile.name); // Update saved CV
-            setSelectedFile(null); // Clear selected file
+            showMessage(data.message || "✅ CV uploaded successfully!", "success");
+            setSavedCV(selectedFile.name);
+            setSelectedFile(null);
         } catch (error) {
-            setMessage("Upload failed. Please try again.");
+            showMessage("❌ Upload failed. Please try again.", "error");
         }
     };
 
@@ -57,7 +64,7 @@ const CurriculumVitae = () => {
         try {
             const response = await fetch(`${API_URL}/api/cv/download-cv`);
             if (response.status === 404) {
-                setMessage("CV not found.");
+                showMessage("⚠️ CV not found.", "warning");
                 return;
             }
             const blob = await response.blob();
@@ -69,7 +76,7 @@ const CurriculumVitae = () => {
             a.click();
             a.remove();
         } catch (error) {
-            setMessage("Download failed.");
+            showMessage("❌ Download failed.", "error");
         }
     };
 
@@ -79,36 +86,36 @@ const CurriculumVitae = () => {
                 method: "DELETE",
             });
             const data = await response.json();
-            setMessage(data.message || "CV deleted successfully!");
-            setSavedCV(null); // Clear saved CV display
+            showMessage(data.message || "✅ CV deleted successfully!", "success");
+            setSavedCV(null);
         } catch (error) {
-            setMessage("Delete failed.");
+            showMessage("❌ Delete failed.", "error");
         }
     };
 
     return (
-        <div className="max-w-lg mx-auto p-6 bg-white shadow-xl rounded-lg border border-gray-200">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">Manage Your CV</h2>
+        <div>
+            <h2 className="text-2xl font-bold text-gray-200 mb-4 text-center">Manage Your CV</h2>
 
             {/* Show Saved CV if Exists */}
             {savedCV ? (
-                <div className="mb-4 p-3 bg-gray-100 rounded-lg text-gray-700">
-                    <p className="font-medium">CV uploaded is named: {savedCV}</p>
+                <div className="mb-4 p-3 bg-gray-800 rounded-lg text-gray-300">
+                    <p className="font-medium">📂 CV uploaded: {savedCV}</p>
                 </div>
             ) : (
-                <p className="mb-4 text-gray-500">No CV saved.</p>
+                <p className="mb-4 text-gray-400">No CV saved.</p>
             )}
 
             {/* File Upload Section */}
             <div className="mb-4">
-                <label className="block text-gray-700 font-medium mb-2">Select CV File:</label>
-                <div className="relative flex items-center border border-gray-300 rounded-lg p-2 bg-gray-50">
+                <label className="block text-gray-300 font-medium mb-2">Select CV File:</label>
+                <div className="relative flex items-center border border-gray-600 rounded-lg p-3 bg-gray-700 text-gray-300">
                     <input
                         type="file"
                         onChange={handleFileChange}
                         className="absolute inset-0 opacity-0 w-full cursor-pointer"
                     />
-                    <span className="text-gray-600 text-sm truncate">
+                    <span className="truncate">
                         {selectedFile ? selectedFile.name : "No file selected"}
                     </span>
                 </div>
@@ -121,6 +128,7 @@ const CurriculumVitae = () => {
             >
                 Upload CV
             </button>
+
             {savedCV && (
                 <>
                     <button
@@ -140,7 +148,16 @@ const CurriculumVitae = () => {
 
             {/* Message Display */}
             {message && (
-                <p className="mt-4 text-center text-gray-700 bg-gray-100 p-2 rounded-lg">{message}</p>
+                <p
+                    className={`mt-4 text-center p-2 rounded-lg ${messageType === "success"
+                            ? "bg-green-500 text-white"
+                            : messageType === "error"
+                                ? "bg-red-500 text-white"
+                                : "bg-yellow-500 text-gray-900"
+                        }`}
+                >
+                    {message}
+                </p>
             )}
         </div>
     );

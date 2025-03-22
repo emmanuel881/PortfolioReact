@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-const API_URL = import.meta.env.VITE_API_URL
+const API_URL = import.meta.env.VITE_API_URL;
+
 const AdminAboutMe = () => {
     const [aboutMe, setAboutMe] = useState("");
     const [loading, setLoading] = useState(false);
@@ -56,52 +57,50 @@ const AdminAboutMe = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center bg-gray-900 text-white px-4 py-6">
-            <div className="bg-gray-800 shadow-xl rounded-lg p-6 w-full max-w-3xl">
-                {/* Status Message */}
-                {message && (
-                    <motion.p
-                        className={`text-center mb-4 p-2 rounded-lg text-sm font-medium ${message.startsWith("✅") ? "bg-green-500" : "bg-red-500"
-                            }`}
-                        animate={{ opacity: [0, 1], y: [-5, 0] }}
-                        transition={{ duration: 0.3 }}
-                    >
-                        {message}
-                    </motion.p>
-                )}
+        <div>
+            {/* Status Message */}
+            {message && (
+                <motion.p
+                    className={`text-center mb-4 p-2 rounded-lg text-sm font-medium ${message.startsWith("✅") ? "bg-green-500" : "bg-red-500"
+                        }`}
+                    animate={{ opacity: [0, 1], y: [-5, 0] }}
+                    transition={{ duration: 0.3 }}
+                >
+                    {message}
+                </motion.p>
+            )}
 
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    {/* Text Area for About Me */}
-                    <div className="relative">
-                        <label className="block text-gray-300 font-medium mb-1">About Me Content</label>
-                        <textarea
-                            className="w-full p-3 border rounded-lg bg-gray-700 text-white resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 border-gray-600"
-                            rows="6"
-                            maxLength={maxLength}
-                            value={aboutMe}
-                            onChange={(e) => setAboutMe(e.target.value)}
-                        ></textarea>
-                        {/* Character Count */}
-                        <span className="absolute right-2 bottom-2 text-gray-400 text-xs">
-                            {aboutMe.length} / {maxLength}
-                        </span>
-                    </div>
+            <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Text Area for About Me */}
+                <div className="relative">
+                    <label className="block text-gray-300 font-medium mb-1">About Me Content</label>
+                    <textarea
+                        className="w-full p-3 border rounded-lg bg-gray-700 text-white resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 border-gray-600"
+                        rows="6"
+                        maxLength={maxLength}
+                        value={aboutMe}
+                        onChange={(e) => setAboutMe(e.target.value)}
+                    ></textarea>
+                    {/* Character Count */}
+                    <span className="absolute right-2 bottom-2 text-gray-400 text-xs">
+                        {aboutMe.length} / {maxLength}
+                    </span>
+                </div>
 
-                    {/* Submit Button */}
-                    <motion.button
-                        type="submit"
-                        whileHover={!loading ? { scale: 1.05 } : {}}
-                        whileTap={!loading ? { scale: 0.95 } : {}}
-                        className={`w-full text-white py-3 rounded-lg transition ${loading || !aboutMe.trim()
-                            ? "bg-gray-500 cursor-not-allowed"
-                            : "bg-blue-500 hover:bg-blue-600"
-                            }`}
-                        disabled={loading || !aboutMe.trim()}
-                    >
-                        {loading ? "Updating..." : "Update About Me"}
-                    </motion.button>
-                </form>
-            </div>
+                {/* Submit Button */}
+                <motion.button
+                    type="submit"
+                    whileHover={!loading ? { scale: 1.05 } : {}}
+                    whileTap={!loading ? { scale: 0.95 } : {}}
+                    className={`w-full text-white py-3 rounded-lg transition ${loading || !aboutMe.trim()
+                        ? "bg-gray-500 cursor-not-allowed"
+                        : "bg-blue-500 hover:bg-blue-600"
+                        }`}
+                    disabled={loading || !aboutMe.trim()}
+                >
+                    {loading ? "Updating..." : "Update About Me"}
+                </motion.button>
+            </form>
         </div>
     );
 };
