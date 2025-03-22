@@ -10,7 +10,6 @@ const SkillsAdmin = () => {
     const [loading, setLoading] = useState(false);
     const [deletingId, setDeletingId] = useState(null);
 
-    // Fetch all skills
     useEffect(() => {
         fetchSkills();
     }, []);
@@ -24,12 +23,10 @@ const SkillsAdmin = () => {
         }
     };
 
-    // Handle form input changes
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    // Create or update skill
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -49,7 +46,6 @@ const SkillsAdmin = () => {
         }
     };
 
-    // Delete skill with animation
     const handleDelete = async (id) => {
         setDeletingId(id);
         setTimeout(async () => {
@@ -61,10 +57,9 @@ const SkillsAdmin = () => {
             } finally {
                 setDeletingId(null);
             }
-        }, 500); // Delay for animation effect
+        }, 500); // Delay to allow animation to complete
     };
 
-    // Load skill for editing
     const handleEdit = (skill) => {
         setFormData({ title: skill.title, description: skill.description, percentage: skill.percentage });
         setEditingId(skill._id);
@@ -120,7 +115,7 @@ const SkillsAdmin = () => {
                     {skills.map((skill) => (
                         <div
                             key={skill._id}
-                            className={`bg-gray-800 p-4 rounded-lg shadow-lg flex flex-col sm:flex-row justify-between items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-4 transition-opacity duration-500 ${deletingId === skill._id ? "opacity-0" : "opacity-100"
+                            className={`bg-gray-800 p-4 rounded-lg shadow-lg flex flex-col sm:flex-row justify-between items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-4 transition-all duration-500 ${deletingId === skill._id ? "opacity-0 -translate-x-10" : "opacity-100 translate-x-0"
                                 }`}
                         >
                             <div className="flex-1">
