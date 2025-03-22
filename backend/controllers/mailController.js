@@ -26,7 +26,7 @@ const sendEmail = async (req, res) => {
         // Email details
         const mailOptions = {
             from: `"${name}" <${email}>`,
-            to: process.env.MAIL_USER,
+            to: "emmanuelsaura008@gmail.com",
             subject: "New Portfolio Message",
             text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
             html: `

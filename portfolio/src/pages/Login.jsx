@@ -42,7 +42,7 @@ const AdminLogin = () => {
                     ← Back
                 </button>
 
-                <h2 className="text-2xl font-bold text-center mb-4">Login.</h2>
+                <h2 className="text-2xl font-bold text-center mb-4">Login</h2>
 
                 <Formik
                     initialValues={{ email: "", password: "" }}

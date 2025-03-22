@@ -72,7 +72,7 @@ const Contact = () => {
                     Back
                 </button>
 
-                <h2 className="text-2xl font-semibold text-center">📩 Contact Me</h2>
+                <h2 className="text-2xl font-semibold text-center">Contact Me</h2>
 
                 <form onSubmit={formik.handleSubmit} className="mt-4 space-y-4">
                     {/* Name */}
