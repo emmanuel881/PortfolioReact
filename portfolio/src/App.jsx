@@ -1,10 +1,4 @@
-// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// import Navbar from "./components/NavBar";
-// import LandingPage from "./components/LandingPage";
-// import ProfileDetails from "./components/ProfileDetails";
-// import Timeline from "./components/TimeLine";
-// import SkillSet from "./components/Skills";
-// import Footer from "./components/Footer";
+
 
 //layouts
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
